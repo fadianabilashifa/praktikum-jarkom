@@ -52,19 +52,17 @@ Berikut adalah urutan prosedur sistematis yang dilaksanakan selama praktikum:
 
 ### **4. Analisis Hasil Pengamatan**
 
-#### **4.1 Konfigurasi Awal Antarmuka**
-Pada tahap awal, sistem menampilkan seluruh kartu jaringan yang tersedia. Pemilihan dilakukan pada *interface* dengan fluktuasi trafik paling tinggi untuk menjamin data berhasil ditangkap.
+#### **4.1 Konfigurasi Interface Jaringan**
+Pada tahap awal, aplikasi Wireshark dijalankan untuk mendeteksi seluruh antarmuka jaringan yang aktif pada perangkat. Pemilihan difokuskan pada *interface* yang menunjukkan grafik aktivitas trafik (seperti Wi-Fi) guna memastikan paket data dari aktivitas browsing dapat ditangkap dengan sempurna.
 ![Tampilan Awal](../assets/image/WelcomeScreen.png)
 
-#### **4.2 Observasi Log Paket**
-Setelah simulasi akses web dilakukan, panel *Packet List* menampilkan akumulasi seluruh paket. Terlihat adanya beragam protokol sistem yang berjalan secara simultan di latar belakang meskipun hanya membuka satu halaman web.
+#### **4.2 Proses Akuisisi Paket Data (Capturing)**
+Setelah memilih antarmuka yang tepat, proses *capture* dimulai berbarengan dengan pengaksesan URL target. Seluruh log lalu lintas data yang masuk dan keluar dari perangkat terekam secara kronologis, mencakup berbagai macam protokol yang berjalan di latar belakang sistem.
+![capture](../assets/image/interfcecapture.png)
 
-*Gambar 2: Rekaman trafik data mentah secara keseluruhan.*
-
-#### **4.3 Implementasi Filter dan Bedah Protokol**
-Penggunaan filter `http` berhasil mengisolasi lalu lintas data sehingga pengamatan fokus pada paket `HTTP GET`.
-
-*Gambar 3: Dekomposisi lapisan protokol pada paket HTTP GET.*
+#### **4.3 Observasi Alamat IP (Source & Destination)**
+Berdasarkan hasil tangkapan, dilakukan identifikasi terhadap alamat IP sumber (*Source*) dan alamat IP tujuan (*Destination*). Hal ini penting untuk memastikan bahwa paket yang dianalisis memang berasal dari perangkat lokal menuju ke server web target yang sedang diakses.
+![packet](../assets/image/Packetlist.png)
 
 **Penjelasan Hierarki Paket:**
 * **Frame:** Informasi fisik mengenai paket yang diakuisisi.
@@ -73,10 +71,22 @@ Penggunaan filter `http` berhasil mengisolasi lalu lintas data sehingga pengamat
 * **Transmission Control Protocol:** Mengelola informasi *port* serta sinkronisasi nomor urut paket.
 * **Hypertext Transfer Protocol:** Memuat metode *request* (GET), identitas *host*, dan informasi *user-agent*.
 
-#### **4.4 Tinjauan Data Mentah**
-Area terbawah menyajikan representasi data asli dalam format heksadesimal dan ASCII.
+#### **4.4 Implementasi Display Filter HTTP**
+Mengingat banyaknya paket yang terekam, diterapkan filter spesifik dengan kata kunci `http`. Langkah ini bertujuan untuk menyaring trafik dan hanya menampilkan paket yang relevan dengan protokol lapisan aplikasi, sehingga mempermudah proses audit data.
+![http](../assets/image/http.png)
 
-*Gambar 4: Tampilan konten paket dalam format Hex dan ASCII.*
+#### **4.5 Dekomposisi Struktur Protokol HTTP GET**
+Melalui panel *Packet Header Details*, dilakukan analisis mendalam terhadap struktur paket **HTTP GET**. Hirarki enkapsulasi data dapat diuraikan sebagai berikut:
+* **Frame:** Informasi fisik paket pada lapisan data link.
+* **Ethernet II:** Memuat detail alamat fisik (MAC Address) pengirim dan penerima.
+* **Internet Protocol Version 4:** Menyediakan informasi alamat logika (IP Address) sumber dan tujuan.
+* **Transmission Control Protocol (TCP):** Mengatur mekanisme transport, termasuk *port* dan nomor urut paket.
+* **Hypertext Transfer Protocol:** Berisi instruksi aplikasi seperti metode `GET`, alamat *host*, dan tipe *browser* yang digunakan.
+![get](../assets/image/httpget.png)
+
+#### **4.6 Representasi Data Mentah (Hex & ASCII)**
+Bagian terakhir adalah tinjauan pada panel *Packet Bytes*. Di sini, isi asli dari paket disajikan dalam format heksadesimal dan karakter ASCII. Tampilan ini memungkinkan kita untuk melihat data mentah yang sebenarnya dikirimkan melalui jaringan sebelum diterjemahkan oleh sistem.
+![packet](../assets/image/tampilanpaket.png)
 
 ---
 
