@@ -43,7 +43,7 @@
 
 **4.1.1 Kode Program UDP Server**
 
-# UDPServer.py
+```python
 from socket import *
 
 serverPort = 12000
@@ -53,9 +53,10 @@ serverSocket.bind(('', serverPort))
 print("The server is ready to receive")
 
 while True:
-    message, clientAddress = serverSocket.recvfrom(2048)
-    modifiedMessage = message.decode().upper()
-    serverSocket.sendto(modifiedMessage.encode(), clientAddress)
+message, clientAddress = serverSocket.recvfrom(2048)
+modifiedMessage = message.decode().upper()
+serverSocket.sendto(modifiedMessage.encode(), clientAddress)
+```
 
 **Penjelasan Alur Program:**
 * **Inisialisasi:** Server membuat socket dengan tipe `SOCK_DGRAM` (UDP) dan melakukan `bind` ke port 12000.
@@ -64,7 +65,7 @@ while True:
 
 **4.1.2 Kode Program UDP Client**
 
-# UDPClient.py
+```python
 from socket import *
 
 serverName = 'localhost'
@@ -78,6 +79,7 @@ modifiedMessage, serverAddress = clientSocket.recvfrom(2048)
 print(modifiedMessage.decode())
 
 clientSocket.close()
+```
 
 **Penjelasan Alur Program:**
 * **Transmisi:** Client langsung mengirimkan data ke IP server dan port 12000 tanpa ada proses jabat tangan (*handshake*) terlebih dahulu.
@@ -85,7 +87,9 @@ clientSocket.close()
 * **Penutup:** Setelah data diterima dan ditampilkan, socket langsung ditutup dengan `close()`.
 
 **4.1.3 Hasil Eksekusi UDP**
+
 ![udp_result](../assets/image/w7g1.png)
+
 
 **Analisis Hasil Eksekusi:**
 1. **Server Ready:** Terminal server menampilkan pesan *"The server is ready to receive"*, menunjukkan socket telah berhasil di-bind ke port 12000.
@@ -98,7 +102,8 @@ clientSocket.close()
 
 **4.2.1 Kode Program TCP Server**
 
-# TCPServer.py
+
+```python
 from socket import *
 
 serverPort = 12000
@@ -109,11 +114,13 @@ serverSocket.listen(1)
 print('The server is ready to receive')
 
 while True:
-    connectionSocket, addr = serverSocket.accept()
-    sentence = connectionSocket.recv(1024).decode()
-    capitalizedSentence = sentence.upper()
-    connectionSocket.send(capitalizedSentence.encode())
-    connectionSocket.close()
+connectionSocket, addr = serverSocket.accept()
+sentence = connectionSocket.recv(1024).decode()
+capitalizedSentence = sentence.upper()
+connectionSocket.send(capitalizedSentence.encode())
+connectionSocket.close()
+```
+
 
 **Penjelasan Alur Program:**
 * **Setup:** Server menggunakan tipe `SOCK_STREAM` (TCP) dan memanggil `listen(1)` untuk mulai mendengarkan permintaan koneksi masuk.
@@ -122,7 +129,8 @@ while True:
 
 **4.2.2 Kode Program TCP Client**
 
-# TCPClient.py
+
+```python
 from socket import *
 
 serverName = 'localhost'
@@ -138,6 +146,7 @@ modifiedSentence = clientSocket.recv(1024)
 print('From Server:', modifiedSentence.decode())
 
 clientSocket.close()
+```
 
 **Penjelasan Alur Program:**
 * **Koneksi:** Client harus memanggil `connect()` terlebih dahulu. Jika server tidak aktif atau port salah, maka akan terjadi error karena koneksi tidak terbentuk.
@@ -145,7 +154,9 @@ clientSocket.close()
 * **Respon:** Client menerima balasan dari server melalui fungsi `recv()`.
 
 **4.2.3 Hasil Eksekusi TCP**
+
 ![tcp_result](../assets/image/w7g2.png)
+
 
 **Analisis Hasil Eksekusi:**
 1. **Connection Established:** Berbeda dengan UDP, saat client dijalankan, terjadi proses *handshake* terlebih dahulu. Jika server belum jalan, client akan langsung *error/refused*.
