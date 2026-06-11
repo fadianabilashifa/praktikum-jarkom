@@ -1,4 +1,18 @@
+# Laporan Praktikum Jaringan Komputer - Modul 7
+## Socket Programming : UDP dan TCP
 
+---
+
+
+### **Identitas Praktikan**
+| Detail Mahasiswa | Informasi |
+| :--- | :--- |
+| **Nama** | [Fadia Nabila Shifa] |
+| **NIM** | [103072400066] |
+| **Kelas** | [IF-04-02] |
+
+
+---
 
 ### **1. TUJUAN PRAKTIKUM**
 * Memahami konsep dasar pemrograman socket pada Application Layer.
